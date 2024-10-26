@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { ToastContainer } from 'react-toastify';
 
 import { Home } from './presentation/views/';
 import reportWebVitals from './reportWebVitals';
@@ -8,6 +9,7 @@ import { ApolloProvider, OrderProvider } from './core/providers';
 import { Header } from './presentation/components';
 
 import './configs/styles/index.css';
+import 'react-toastify/dist/ReactToastify.css';
 
 ReactDOM.render(
   <React.StrictMode>
@@ -17,6 +19,7 @@ ReactDOM.render(
         <Home />
       </OrderProvider>
     </ApolloProvider>
+    <ToastContainer />
   </React.StrictMode>,
   document.getElementById('root')
 );

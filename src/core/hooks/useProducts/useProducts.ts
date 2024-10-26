@@ -6,8 +6,10 @@ import { MUTATION_ADD_ITEM_TO_ORDER } from '../../graphql/mutations';
 import { useStateWithStorage } from '../useStateWithStorage';
 import { useOrder } from '../useOrder';
 import { productMap } from './utils/productMap';
+import { useToast } from '../useToast';
 
 export const useProducts = () => {
+  const { toast } = useToast();
   const { setSubTotal } = useOrder();
   const [, setState] = useStateWithStorage({ key: 'subTotal' });
 
@@ -17,6 +19,11 @@ export const useProducts = () => {
     onCompleted(data) {
       setSubTotal(data.addItemToOrder.totalWithTax);
       setState(String(data.addItemToOrder.totalWithTax));
+
+      toast({
+        title: 'Product added to cart',
+        type: 'success',
+      });
 
       return;
     },
