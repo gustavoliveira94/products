@@ -3,24 +3,17 @@ import { render, fireEvent } from '@testing-library/react';
 
 import { Product } from '../Product';
 
-// jest.mock('core/hooks/useProducts', () => ({
-//     useProducts: () => ({
-//         loading: true,
-//         products: [],
-//         buyProduct: jest.fn(),
-//     }),
-// }));
+const product = {
+  id: '1',
+  name: 'Product 1',
+  price: '100',
+  image: 'image',
+  description: 'description',
+  fullDescription: 'description description',
+};
 
 describe('Testing <Product /> Component', () => {
   it('Should render a product', () => {
-    const product = {
-      id: '1',
-      name: 'Product 1',
-      price: '100',
-      image: 'image',
-      description: 'description',
-    };
-
     const { getByText, getByAltText } = render(
       <Product product={product} buyProduct={jest.fn()} />
     );
@@ -32,14 +25,6 @@ describe('Testing <Product /> Component', () => {
   });
 
   it('Should increase and decrease the quantity', () => {
-    const product = {
-      id: '1',
-      name: 'Product',
-      price: '100',
-      image: 'image',
-      description: 'description',
-    };
-
     const { getByText } = render(
       <Product product={product} buyProduct={jest.fn()} />
     );
@@ -56,15 +41,21 @@ describe('Testing <Product /> Component', () => {
     expect(getByText('1')).toBeInTheDocument();
   });
 
-  it('Should click on button', () => {
-    const product = {
-      id: '1',
-      name: 'Product',
-      price: '100',
-      image: 'image',
-      description: 'description',
-    };
+  it('Should not be less than 0', () => {
+    const { getByText } = render(
+      <Product product={product} buyProduct={jest.fn()} />
+    );
 
+    const minusButton = getByText('-');
+
+    fireEvent.click(minusButton);
+    fireEvent.click(minusButton);
+    fireEvent.click(minusButton);
+
+    expect(getByText('1')).toBeInTheDocument();
+  });
+
+  it('Should click on button', () => {
     const buyProduct = jest.fn();
 
     const { getByText } = render(
