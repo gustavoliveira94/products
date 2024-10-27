@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useProduct } from './hooks/useProduct';
 
 import { ProductStyles } from './Product.styles';
 
@@ -9,6 +9,7 @@ interface ProductProps {
     price: string;
     image: string;
     description: string;
+    fullDescription: string;
   };
   buyProduct: ({
     productVariantId,
@@ -20,20 +21,14 @@ interface ProductProps {
 }
 
 export const Product: React.FC<ProductProps> = ({ product, buyProduct }) => {
-  const [quantity, setQuantity] = useState(1);
-
-  const itIsMoreThanOne = quantity > 1;
-  const description =
-    product.description.length > 100
-      ? `${product.description.slice(0, 120)}...`
-      : product.description;
+  const { handleQuantity, quantity } = useProduct();
 
   return (
     <ProductStyles.Item data-testid="product">
       <ProductStyles.Image src={product.image} alt={product.image} />
       <ProductStyles.Name>{product.name}</ProductStyles.Name>
-      <ProductStyles.Description title={product.description}>
-        {description}
+      <ProductStyles.Description title={product.fullDescription}>
+        {product.description}
       </ProductStyles.Description>
       <ProductStyles.Price>
         <b>Price:</b> {product.price}
@@ -45,11 +40,11 @@ export const Product: React.FC<ProductProps> = ({ product, buyProduct }) => {
           Buy
         </button>
         <div>
-          <button onClick={() => setQuantity(quantity + 1)}>+</button>
+          <button onClick={() => handleQuantity({ value: quantity + 1 })}>
+            +
+          </button>
           <p>{quantity}</p>
-          <button
-            onClick={() => (itIsMoreThanOne ? setQuantity(quantity - 1) : null)}
-          >
+          <button onClick={() => handleQuantity({ value: quantity - 1 })}>
             -
           </button>
         </div>

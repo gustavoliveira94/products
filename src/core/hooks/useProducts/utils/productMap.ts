@@ -10,12 +10,16 @@ export const productMap = ({ products }: IProductMap) => {
       currency: 'USD',
       style: 'currency',
     }).format(product.variants?.[0]?.price);
+    const description =
+      product.description.length > 100
+        ? `${product?.description.replace(/<[^>]*>/g, '').slice(0, 120)}...`
+        : product?.description.replace(/<[^>]*>/g, '');
 
     return {
       id: product?.variants[0]?.id,
       name: product?.name,
-      description:
-        product?.description.replace(/<[^>]*>/g, '') || 'No description.',
+      description: description || 'No description.',
+      fullDescription: product?.description,
       price: newPrice,
       image:
         product.assets?.[0]?.preview ||
